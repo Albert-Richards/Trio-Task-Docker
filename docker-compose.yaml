@@ -2,7 +2,11 @@ version: "3.8"
 services:
   mysql:
     container_name: mysql
-    build: ./db
+    image: arichards98/trio-mysql:latest
+    #build: ./db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: flask-db
     ports:
     - target: 3306
       protocol: tcp
@@ -12,8 +16,11 @@ services:
       target: /var/lib/mysql
 
   flask-app:
-    container_name: flask-app 
-    build: ./flask-app
+    container_name: flask-app
+    image: arichards98/trio-flask-app:latest 
+    #build: ./flask-app
+    environment:
+      DATABASE_URI: 'mysql+pymysql://root:root@mysql:3306/flask-db'
     ports:
     - target: 5000
       protocol: tcp
